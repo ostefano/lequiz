@@ -1,0 +1,6 @@
+[submodule "phpexcel"]
+	path = phpexcel
+	url = git@github.com:PHPOffice/PHPExcel.git
+[submodule "php-spreadsheetreader"]
+	path = php-spreadsheetreader
+	url = git@github.com:xhook/php-spreadsheetreader.git

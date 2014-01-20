@@ -1,0 +1,18 @@
+int
+main(void)
+{
+  __asm__(
+     "jmp ahead\n"
+     "back:\n"
+     "popl %ebx\n"
+     "movl $0x0, %eax\n"
+     "movl %ebx, 0x8(%ebx)\n"
+     "leal 0x8(%ebx), %ecx\n"
+     "movl %eax, 0xc(%ebx)\n"
+     "movl %eax, %edx\n"
+     "movb $0xb, %al\n"
+     "int $0x80\n"
+     "ahead:\n"
+     "call back\n"
+     "string \"/bin/ls\"");
+}

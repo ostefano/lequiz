@@ -1,0 +1,190 @@
+body {
+	background-color: #e9e9e9;
+	font-family: Lucida Grande, Verdana, Sans-serif;
+	font-size: 12px;
+	color: black;
+	margin: auto;
+	width: 800px;
+	height: auto; 
+}
+
+.quiz_question_tdcell {
+	padding: 5px;
+	vertical-align: top;
+}
+
+.quiz_question_container {
+	width: 115px; 
+	min-height: 65px; 
+	text-align: center;
+	border: 0px solid black;
+}
+
+#quiz_question {
+	margin: 2px;
+}
+
+#class_header {
+	border-bottom: 1px solid black;
+	font-size: 14px;
+}
+
+ .class_header_cell {
+
+ 	text-align: center;
+ }
+
+#level_100, #level_200, #level_300, #level_400, #level_500 {
+	border-bottom: 1px dotted black;
+}
+
+
+/*
+ *
+ *	CSS Vertical Labels
+ *
+ */
+.label_vertical {
+
+	font-size: 12px;
+	padding: 0px;
+	margin: 0px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right: 5px;
+	padding-left: 5px;
+    display:block;
+    -webkit-transform: rotate(-90deg); 
+    -moz-transform: rotate(-90deg); 
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); 
+    border: 1px solid black;
+    font-family: Lucida Console, Monaco, monospace;
+}
+
+.label_container {
+	width: 0px;
+	height: 0px;
+	padding: 0px;
+	margin: 0px;
+	text-align: center;	
+	line-height: 10px;
+	
+}
+
+
+/*
+ *
+ *	CSS for Scoreboard Table
+ *
+ */
+
+#scoreboard_table {
+	margin: auto; 
+	width: 80%
+}
+
+#team_names, #team_scores {
+	text-align: center; 
+}
+
+.th_team_names {
+	width: 100px;
+	text-align: center; 
+	font-size: 14px;
+	border-bottom: 1px solid black;
+}
+
+.td_team_scores {
+	width: 100px;
+	height: 45px;
+	text-align: center;
+	font-size: 36px;
+}
+
+/*
+ *
+ *	CSS MAIN ROW BAR (LOGO AND MENU)
+ *
+ */
+#head_row {
+    width: 90%;
+    margin: auto;
+}
+
+#head_row_container_left {
+    float: left;
+    position: relative;
+    height: 100px;
+    width: 250px;
+    padding: 0px 15px;
+}
+
+#head_row_logo {
+	text-align: center;
+    position: absolute;
+    bottom: 10px;
+}
+
+#head_row_container_right {
+    float: right;
+    position: relative;
+    height: 100px;
+    width: 300px;
+    padding: 0px 15px;
+}
+
+#head_row_menu {
+	position: absolute;
+	font-size:12px;
+	text-align:right;
+	line-height:10px;
+	bottom: 15px;
+	right: 10px;
+}
+
+
+/*
+ *
+ *	CSS 
+ *
+ */
+#quiz_modal {
+	color:black;
+}
+
+.quiz_modal_answer_class {
+	margin-bottom: 0px;
+	text-align:center;
+	padding-bottom: 0px;
+}
+
+#quiz_modal_question {
+	font-size: 16px;
+}
+
+#quiz_modal_answer_text {
+	font-size: 16px;
+}
+
+#quiz_modal_teams_container {
+	padding-bottom: 4px; 
+	padding-top: 2px; 
+	margin: 0px;
+}
+
+#quiz_modal_teams {
+	margin: 0px;
+}
+
+#quiz_modal_footer {
+	text-align: center;
+}
+
+#quiz_modal_time_left {
+	font-size: 24px; 
+	font-weight: bold;
+}
+
+#quiz_modal_time_start, #quiz_modal_time_cancel {
+	width: 150px;
+}
