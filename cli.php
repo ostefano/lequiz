@@ -1,7 +1,7 @@
 <?php
 
 	require_once('config.inc.php');
-	require_once('phpexcel/PHPExcel.php');
+	require_once('phpexcel/Classes/PHPExcel.php');
 	require_once('php-spreadsheetreader/SpreadsheetReaderFactory.php');
 
 	// TEST where we read a JSON and print all its fields
