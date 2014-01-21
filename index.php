@@ -62,7 +62,7 @@
 	-->
 	<div id="head_row" style="clear: both;">	
 		<div id="head_row_container_left">
-		 	<a id="head_row_logo" href="http://academy.kaspersky.com/" title="Academy – English – Global – academy.kaspersky.com">
+		 	<a id="head_row_logo" href="http://academy.kaspersky.com/" target="_blank" title="Academy – English – Global – academy.kaspersky.com">
 		 		<img src="./media/imgs/logo_transparent.png" width="180" />
 			</a>
 		</div>
