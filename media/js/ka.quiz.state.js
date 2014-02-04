@@ -203,9 +203,9 @@ function set_to_init_state() {
 	$('#time_left_seconds').html(time_left);
 }
 
- function set_to_done_state() {
- 	$('#quiz_modal_answer').show();
- 	startButton = $("[id=quiz_modal_time_start]");
+function set_to_done_state() {
+	$('#quiz_modal_answer').show();
+	startButton = $("[id=quiz_modal_time_start]");
 	startButton.removeClass("btn-warning").addClass("btn-info disabled");
 	startButton.attr('status', "disabled");
 	startButton.text("Show answer");
@@ -219,12 +219,13 @@ function set_to_init_state() {
 			}		
 		}
 	}
- }
+}
 
 function timer_countdown_function()  {
 	time_left--;
 	$('#time_left_seconds').html(time_left);
-	if (!time_left) {
+
+	if(time_left <= 0) {
 		// Clear the countdown interval
 		clearInterval(think_timer_countdown);
 		startButton = $("[id=quiz_modal_time_start]");
@@ -304,7 +305,10 @@ function start_button_clicked(target) {
 		$(target).removeClass("btn-success").addClass("btn-warning");
 		$(target).text("Pause");
 		$(target).attr('status',"waiting_pause");			
-		think_timer_countdown = setInterval(timer_countdown_function, 1000);				
+		think_timer_countdown = setInterval(timer_countdown_function, 1000);
+		// Enable the rush functionality	
+		$('#quiz_modal_time_left_rush').on('click', function(e) { time_left = 0 });
+		$('#quiz_modal_time_left_rush').css({"color" : "black", "text-decoration" : "underline"});		
 	} else if ($(target).attr('status') == "waiting_pause") {
 		$(target).text("Resume");
 		$(target).attr('status',"waiting_unpause");		
@@ -349,11 +353,16 @@ function modal_window_hide() {
 }
 
 function modal_window_show() {
+	// No matter what
+	// reset the ability to rush 
+	$('#quiz_modal_time_left_rush').unbind('click');
+	$('#quiz_modal_time_left_rush').css({"color" : "black", "text-decoration" : "none"});
+
+	// If the question has been done already, set it done state
+	// otherwise hide the answer and etc etc
 	if (statusdata_questions[current_q_index].attempted === true) {
-		// If the question has been done, set it to done state
 		set_to_done_state();
 	} else {
-		// Otherwise setup an init state
 		set_to_init_state();
 	}
 }

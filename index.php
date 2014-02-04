@@ -218,7 +218,9 @@
 					</button>			
 					<div> 
 						<span id="quiz_modal_time_left">
-							Time left: <span id="time_left_seconds">30</span>s
+							<a id="quiz_modal_time_left_rush" href="javascript:void(0);">
+								Time left: <span id="time_left_seconds">30</span>s
+							</a>
 						</span>
 					</div>
 				</div>
