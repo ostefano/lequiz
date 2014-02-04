@@ -343,7 +343,7 @@ function modal_window_hide() {
 		element = document.getElementById('team_checkbox_' + k_name);
 		if($(element).is(':checked')) {
 			var k_int_score = +k_score;
-			k_int_score += levels_points[level];
+			k_int_score += 100*levels_points[level];
 			statusdata_teams[d]['score'] = k_int_score;
 			$("[id='" + k_name + "']").text(k_int_score);
 			element.parentElement.click();
