@@ -53,6 +53,22 @@
   			</label>
 		]]>
 	</script>
+
+	<script id="template_team_modifiers" type="text/x-jqote-template">
+		<![CDATA[
+			<td id="<%= this.name %>_modifier" class="td_team_modifiers">
+	  			<div class="btn-group">
+    				<button id="team_modifier_minus" class="btn btn-default btn-xs" type="button">
+					    <span class="glyphicon glyphicon-minus"></span>
+					</button>
+					<button id="team_modifier_plus" class="btn btn-default btn-xs" type="button">
+						<span class="glyphicon glyphicon-plus"></span>
+					</button>
+				</div>
+			</td>
+		]]>
+	</script>
+
 </head>
 
 <body>
@@ -90,6 +106,9 @@
 	  	<tbody>
 	  		<tr id="team_scores"></tr>
 	  	</tbody>
+	  	<tfoot>
+	  		<tr id="team_modifiers"></tr>
+	  	</tfoot>
 	  </table>
 	</div>
 

@@ -77,6 +77,10 @@ function build_gui() {
 	$($('#template_team_scores').jqote(statusdata_teams)).appendTo($('#team_scores'));
 	$($('#template_quiz_modal_teams').jqote(statusdata_teams)).appendTo($('#quiz_modal_teams'));
 
+	// (2a) new item
+	$($('#template_team_modifiers').jqote(statusdata_teams)).appendTo($('#team_modifiers'));
+
+
 	// (3) We need to re-attach handlers to what we rebuilt (question buttons, team buttons)
 	$("[id=quiz_question]").click(function(e) {
 		e.preventDefault();
@@ -86,6 +90,17 @@ function build_gui() {
 	$('.btn-group > .btn, .btn[data-toggle="button"]').click(function(e) {
 		toggle_checkbok(e);
 	});
+
+	// (3a) new item (one handler per button)
+	$('[id=team_modifier_minus]').click(function(e) {
+		e.preventDefault();
+		team_modify_result(this, false);
+	});
+	$('[id=team_modifier_plus]').click(function(e) {
+		e.preventDefault();
+		team_modify_result(this, true);
+	});
+
 }
 
 function destroy_gui() {
@@ -96,6 +111,9 @@ function destroy_gui() {
 	$("th").remove(".th_team_names");
 	$("td").remove(".td_team_scores");
 	$("#quiz_modal_teams").empty();
+
+	// (2a) new item
+	$("td").remove(".td_team_modifiers");
 }
 
 function reset_state() {
@@ -234,6 +252,22 @@ function timer_countdown_function()  {
 		startButton.text("Show answer");
 		$('#time_left_seconds').html("0");
 	}
+}
+
+function team_modify_result(target, increment) {
+	current_t = target.parentNode.parentNode.id;
+	current_t_id = current_t.split('_')[0];
+	current_t_index = statusdata_teams.map(function(e) { return e.name; }).indexOf(current_t_id);
+
+	var k_int_score = +statusdata_teams[current_t_index]['score'];
+	if(increment === true) {
+		k_int_score += 100;
+	} else if (k_int_score > 0) {
+		k_int_score -= 100;
+	}
+	
+	statusdata_teams[current_t_index]['score'] = k_int_score;
+	$("[id='" + statusdata_teams[current_t_index]['name'] + "']").text(k_int_score);
 }
 
 function open_modal_window(target) {

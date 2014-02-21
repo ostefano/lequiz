@@ -101,6 +101,11 @@ body {
 	font-size: 36px;
 }
 
+.td_team_modifiers {
+
+	text-align: center;
+}
+
 /*
  *
  *	CSS MAIN ROW BAR (LOGO AND MENU)
