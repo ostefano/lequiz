@@ -205,6 +205,22 @@ function save_state() {
 			}
 		}
 	});
+
+	if(remote_push) {
+		var form_data = {
+			game: "quiz_score",
+			teams: JSON.stringify(statusdata_teams)
+		};
+		$.ajax({
+			url: "/lerank/datastore.php?action=put",
+			type: 'POST',
+			async : false,
+			data: form_data,
+			success: function(returned_data) {
+				console.log(returned_data);
+			}
+		});
+	}
 }
 
 function set_to_init_state() {
