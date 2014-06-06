@@ -218,8 +218,26 @@ function save_state() {
 			data: form_data,
 			success: function(returned_data) {
 				console.log(returned_data);
+			},
+			error: function(returned_data) {
+				console.log("[Remote AJAX Error] " + returned_data);
 			}
 		});
+		/*
+		$.ajax({
+			url: "https://remote_server/datastore.php?action=put",
+			type: 'POST',
+			async : false,
+			crossDomain: true,
+			data: form_data,
+			success: function(returned_data) {
+				console.log(returned_data);
+			},
+			error: function(returned_data) {
+				console.log("[Remote AJAX Error] " + returned_data);
+			}
+		});
+		*/
 	}
 }
 
