@@ -1,5 +1,7 @@
 <!--
 
+var remote_push = true;
+
 var default_time_to_think = 3; // 30 seconds
 var force_default_load = false;
 var force_questions_done = false;

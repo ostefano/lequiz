@@ -102,7 +102,7 @@
 	$teams = array ();
 	for ($i = 0; $i < count($default_t); $i++) {
     	$teams = array_merge ($teams, array($default_t[$i]));
-    	echo "[ ] (".$default_t[$i]['name'].") = ".$default_t[$i]['score'].$LF;
+    	echo "[id=".$default_t[$i]['id']."] (".$default_t[$i]['name'].") = ".$default_t[$i]['score'].$LF;
 	}
 	echo "[*] Number of teams: ".count($teams).$LF;
 

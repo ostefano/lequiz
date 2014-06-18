@@ -205,6 +205,40 @@ function save_state() {
 			}
 		}
 	});
+
+	if(remote_push) {
+		var form_data = {
+			game: "quiz_score",
+			teams: JSON.stringify(statusdata_teams)
+		};
+		$.ajax({
+			url: "/lerank/datastore.php?action=put",
+			type: 'POST',
+			async : false,
+			data: form_data,
+			success: function(returned_data) {
+				console.log(returned_data);
+			},
+			error: function(returned_data) {
+				console.log("[Remote AJAX Error] " + returned_data);
+			}
+		});
+		/*
+		$.ajax({
+			url: "https://remote_server/datastore.php?action=put",
+			type: 'POST',
+			async : false,
+			crossDomain: true,
+			data: form_data,
+			success: function(returned_data) {
+				console.log(returned_data);
+			},
+			error: function(returned_data) {
+				console.log("[Remote AJAX Error] " + returned_data);
+			}
+		});
+		*/
+	}
 }
 
 function set_to_init_state() {
