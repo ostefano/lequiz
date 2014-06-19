@@ -1,6 +1,7 @@
 <!--
 
 var remote_push = true;
+var remote_push_server = "";
 
 var default_time_to_think = 3; // 30 seconds
 var force_default_load = false;

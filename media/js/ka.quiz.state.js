@@ -198,9 +198,11 @@ function save_state() {
 				var time = h + ":" + m + ":" + s;
 				$("#head_row_time").html(time);
 				$("#head_row_msg").html(server.message);
+				console.log("[save][local] = " + returned_data);
 			} else {
 				if(server.message != undefined) {
 					$("#head_row_msg").html(server.message);
+					console.log("[save][local] = " + returned_data);
 				}
 			}
 		}
@@ -217,10 +219,10 @@ function save_state() {
 			async : false,
 			data: form_data,
 			success: function(returned_data) {
-				console.log(returned_data);
+				console.log("[save][remote] = " + returned_data);
 			},
 			error: function(returned_data) {
-				console.log("[Remote AJAX Error] " + returned_data);
+				console.log("[save][remote] = " + returned_data);
 			}
 		});
 		/*
@@ -231,10 +233,10 @@ function save_state() {
 			crossDomain: true,
 			data: form_data,
 			success: function(returned_data) {
-				console.log(returned_data);
+				console.log("[save][remote] = " + returned_data);
 			},
 			error: function(returned_data) {
-				console.log("[Remote AJAX Error] " + returned_data);
+				console.log("[save][remote] = " + returned_data);
 			}
 		});
 		*/
