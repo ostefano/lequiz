@@ -3,7 +3,7 @@
 	$excel_full_engine = true;
 	$q_dataset_default = false;
 	$q_dataset_attempted = false;
-	$q_dataset = "C:\\Users\\Stefano\\quiz-dataset-new.xls";
+	$q_dataset = "./files/dataset.xls";
 	$q_dataset_sheet = 5;
 	$filename = './files/state.txt';
 	$LF = (PHP_SAPI === 'cli') ? "\n" : "<br />";

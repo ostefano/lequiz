@@ -1,6 +1,6 @@
 <?php
 
-	require_once('config.inc.php');
+	require_once('config.php');
 
 	function load_state() {
 		global $filename;

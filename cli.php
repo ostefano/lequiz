@@ -1,6 +1,6 @@
 <?php
 
-	require_once('config.inc.php');
+	require_once('config.php');
 	require_once('phpexcel/Classes/PHPExcel.php');
 	require_once('php-spreadsheetreader/SpreadsheetReaderFactory.php');
 
