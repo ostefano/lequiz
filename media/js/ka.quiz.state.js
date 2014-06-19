@@ -214,20 +214,7 @@ function save_state() {
 			teams: JSON.stringify(statusdata_teams)
 		};
 		$.ajax({
-			url: "/lerank/datastore.php?action=put",
-			type: 'POST',
-			async : false,
-			data: form_data,
-			success: function(returned_data) {
-				console.log("[save][remote] = " + returned_data);
-			},
-			error: function(returned_data) {
-				console.log("[save][remote] = " + returned_data);
-			}
-		});
-		/*
-		$.ajax({
-			url: "https://remote_server/datastore.php?action=put",
+			url: "https://localhost/datastore.php?action=put",
 			type: 'POST',
 			async : false,
 			crossDomain: true,
@@ -239,7 +226,6 @@ function save_state() {
 				console.log("[save][remote] = " + returned_data);
 			}
 		});
-		*/
 	}
 }
 
