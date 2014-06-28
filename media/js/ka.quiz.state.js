@@ -5,14 +5,15 @@ var think_timer_countdown;
 var current_q_index;
 var current_q_multiple;
 
+function load_options(force_default) {
+	if(force_default) {
+		remote_push = false;
+		remote_push_url = "http://null";
+		current_classes = default_classes;
+		current_levels = default_levels;
+		return;
+	}
 
-var remote_push = false;
-var remote_push_url;
-
-var rev_classes;
-var rev_levels;
-
-function load_options() {
 	$.ajax({
 		url: "state.php?action=options",
 		type: 'GET',
@@ -22,8 +23,8 @@ function load_options() {
 			if (server.status === 200) {
 				remote_push = server.remote_push;
 				remote_push_url = server.remote_push_url;
-				rev_classes = server.classes;
-				rev_levels = server.levels;
+				current_classes = server.classes;
+				current_levels = server.levels;
 			} else {
 				remote_push = false;
 			}
@@ -78,22 +79,16 @@ function toggle_question_element(q_index, set_to_attempted) {
 
 function build_gui() {
 
-	//classes = rev_classes;
-	//levels = rev_levels;
-
-	console.log(rev_levels);
-	//console.log(levels);
-
-
-	var head = $('#template_head').jqote(rev_classes);
+	// (0) Create big table headers
+	var head = $('#template_head').jqote(current_classes);
 	$(head).appendTo($('[id=class_header]'));
 
-
-	for (var i = 0; i < rev_classes.length; i++) {
-		for(var j = 0; j < rev_levels.length; j++) {
+	// (1a) Fill the grid with buttons
+	for (var i = 0; i < current_classes.length; i++) {
+		for(var j = 0; j < current_levels.length; j++) {
 
 			var items = statusdata_questions.filter(function(item) {
-				if(item.level == rev_levels[j] && item.class == rev_classes[i]) {
+				if(item.level == current_levels[j] && item.class == current_classes[i]) {
 					return item;
 				}
 			});
@@ -105,55 +100,7 @@ function build_gui() {
 			var toadd = "<div class='quiz_question_container'>" + button + "</div>";
 			$(toadd).appendTo($('[attr-l=' + j + '][attr-c=' + i + ']'));
 		}
-		/*
-		for(var j = 0; j < rev_levels.length; j++) {
-			var items = statusdata_questions.filter(function(item) {
-				if(item.level == rev_levels[j] && item.class == rev_classes[i]) {
-					return item;
-				}
-			});
-			//console.log(items);
-			var button = $('#template').jqote(items);
-			if (button === "") {
-				button = "&nbsp;";
-			}
-			var toadd = "<div class='quiz_question_container'>" + button + "</div>";
-			$(toadd).appendTo($('[attr-l=' + i + '][attr-c=' + j + ']'));
-		}
-		*/
 	}
-
-
-
-
-	// (1a) Fill the grid with buttons
-	/*
-	var i = 0;
-	var j = 0;
-	classes.forEach(function(c) {
-		levels.forEach(function(l) {
-//			console.log(c + " " + l);
-			var items = statusdata_questions.filter(function(item) {
-				if(item.level === l && item.class === c) {
-					return item;
-				}
-			});
-			console.log(items);
-			var button = $('#template').jqote(items);
-			if (button === "") {
-				button = "&nbsp;";
-			}
-			var toadd = "<div class='quiz_question_container'>" + button + "</div>";
-			//$(toadd).appendTo($('#level_' + l + "_" + c));
-			$(toadd).appendTo($('[attr-l=' + i + '][attr-c=' + j + ']'));
-
-//			attr-l="3" attr-c="0"
-//			[id=quiz_question][attr_id='" + k_id + "']
-			i++;
-		});
-		j++;
-	});
-	*/
 
 	// (1b) Artificially click the button if the current (just loaded) state says so
 	for (var q_index in statusdata_questions) {
@@ -195,14 +142,12 @@ function destroy_gui() {
 
 	// (0) destroy header
 	$("th").remove(".class_header_cell");
-
 	// (1) destroy all the question buttons
 	$("div").remove(".quiz_question_container");
 	// (2) destroy all structures depending on team names and scores (3 items)
 	$("th").remove(".th_team_names");
 	$("td").remove(".td_team_scores");
 	$("#quiz_modal_teams").empty();
-
 	// (2a) new item
 	$("td").remove(".td_team_modifiers");
 }
@@ -385,9 +330,7 @@ function team_modify_result(target, increment) {
 
 function open_modal_window(target) {
 
-	//current_q = $(target).attr('entry');
-	//current_q_id = current_q.split('_')[2];
-	current_q_id = $(target).attr('attr_id');
+	current_q_id = +($(target).attr('attr_id'));
 	current_q_index = statusdata_questions.map(function(e) { return e.id; }).indexOf(current_q_id);
 
 	if (typeof current_q_index === "undefined" || current_q_index === -1) {
@@ -405,7 +348,7 @@ function open_modal_window(target) {
 	que = statusdata_questions[current_q_index].q;
 	ans = statusdata_questions[current_q_index].a;
 	tim = default_time_to_think;
-	lab = statusdata_questions[current_q_index].class + " " + statusdata_questions[current_q_index].level;
+	lab = "Topic: " + statusdata_questions[current_q_index].class + " - Points: " + statusdata_questions[current_q_index].level;
 
 	// Hide immediately the answer!
 	$('#quiz_modal_answer').hide();

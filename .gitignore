@@ -1,4 +1,5 @@
-files/state.txt
+state/meta_state.txt
+state/core_state.txt
 files/desktop.ini
 config.php
 .htaccess

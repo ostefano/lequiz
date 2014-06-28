@@ -132,10 +132,10 @@
 			$answer = NULL;
 		}
 		$question = array (
-			"id" => strval($i), 
+			"id" => (int) $i, 
 			"class" => $element[0],	
-			"level" => strval($element[1]),
-			"attempted" => $q_dataset_attempted,
+			"level" => (int) $element[1],
+			"attempted" => (bool) $q_dataset_attempted,
 			"q" => $element[2],
 			"a" => $answer
 		);
@@ -186,7 +186,9 @@
 	 */
 	echo $LF."[*] Determining classes (max=".$MAX_CLASSES.")".$LF;
 	$q_classes = array_map(function($a) { return $a["class"]; }, $questions);
-	$q_classes = array_keys(array_flip($q_classes));
+	$q_classes = array_unique($q_classes);
+	$q_classes = array_values($q_classes);
+	//$q_classes = array_keys(array_flip($q_classes));
 	sort($q_classes);
 	for ($i = 0; $i < count($q_classes); $i++) {
 		echo "[ ] ".$q_classes[$i].$LF;

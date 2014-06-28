@@ -213,7 +213,7 @@
     					&times;
     				</button>
         			<h3 class="modal-title" style="font-weigth: bold;">
-        				Question: <span id="quiz_modal_title"></span>
+        				<span id="quiz_modal_title"></span>
         			</h3>
   				</div>
 

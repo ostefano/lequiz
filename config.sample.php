@@ -8,8 +8,8 @@
 	$q_dataset = "./files/dataset.xls";
 	$q_dataset_sheet = 5;
 	
-	$filename = "./files/state.txt";
-	$filename_meta = "./files/metastate.txt";
+	$filename = "./state/state.txt";
+	$filename_meta = "./state/metastate.txt";
 	$LF = (PHP_SAPI === 'cli') ? "\n" : "<br />";
 
 ?>
