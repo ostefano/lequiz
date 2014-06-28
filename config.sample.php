@@ -1,7 +1,7 @@
 <?php
 
 	$remote_push_url = "http://localhost/lerank";
-	$remote_push = true;
+	$remote_push = false;
 	$excel_full_engine = true;
 	$q_dataset_default = false;
 	$q_dataset_attempted = false;

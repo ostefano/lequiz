@@ -3,8 +3,8 @@
 var remote_push = false;
 var remote_push_url;
 
-var rev_classes;
-var rev_levels;
+var current_classes;
+var current_levels;
 
 var default_time_to_think = 3; // 30 seconds
 var force_default_load = false;
