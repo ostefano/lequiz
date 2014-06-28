@@ -4,6 +4,64 @@
 	require_once('phpexcel/Classes/PHPExcel.php');
 	require_once('php-spreadsheetreader/SpreadsheetReaderFactory.php');
 
+	$MAX_CLASSES = 5;
+	$MAX_LEVELS = 5;
+
+	$i = 0;
+	$default_t[$i++] = array( "id" => 1, "name" => "Team 1", "score" => 0 );
+	$default_t[$i++] = array( "id" => 2, "name" => "Team 2", "score" => 0 );
+	$default_t[$i++] = array( "id" => 3, "name" => "Team 3", "score" => 0 );
+	$default_t[$i++] = array( "id" => 4, "name" => "Team 4", "score" => 0 );
+
+	$i = 0;
+	$default_q[$i++] = array ( "trivia", "100", "q", "a" );
+	$default_q[$i++] = array ( "trivia", "200", "q", "a" );
+	$default_q[$i++] = array ( "trivia", "300", "q", "a" );
+	$default_q[$i++] = array ( "trivia", "400", "q", "a" );
+	$default_q[$i++] = array ( "trivia", "500", "q", "a" );
+	$default_q[$i++] = array ( "malware", "100", "q", "a" );
+	$default_q[$i++] = array ( "malware", "200", "q", "T:24", "F:311");
+	$default_q[$i++] = array ( "malware", "300", "q", "a" );
+	$default_q[$i++] = array ( "malware", "400", "q", "a" );
+	$default_q[$i++] = array ( "malware", "500", "q", "a" );
+	$default_q[$i++] = array (  "appsec", "100", "q", "a" );
+	$default_q[$i++] = array (  "appsec", "200", "q", "a" );
+	$default_q[$i++] = array (  "appsec", "300", "q", "a" );
+	$default_q[$i++] = array (  "appsec", "400", "q", "a" );
+	$default_q[$i++] = array (  "appsec", "500", "q", "a" );
+	$default_q[$i++] = array (  "web", "100",  "q", "a" );
+	$default_q[$i++] = array (  "web", "200",  "q", "a" );
+	$default_q[$i++] = array (  "web", "300",  "q", "a" );
+	$default_q[$i++] = array (  "web", "400",  "q", "T:24", "F:311");
+	$default_q[$i++] = array (  "web", "500",  "q", "a" );
+	$default_q[$i++] = array (  "misc", "100", "q", "a" );
+	$default_q[$i++] = array (  "misc", "200", "q", "a" );
+	$default_q[$i++] = array (  "misc", "300", "q", "a" );
+	$default_q[$i++] = array (  "misc", "400", "q", "a" );
+	$default_q[$i++] = array (  "misc", "500", "q", "a" );
+
+	function store_object_todisk($packet, $filename) {
+		global $LF;
+
+		$p_encoded = json_encode($packet, JSON_PRETTY_PRINT);
+		$ret_val = @file_put_contents($filename, $p_encoded);	
+		
+		if($ret_val === false) {
+			echo "[!] Script failed at some point!".$LF;
+		} else {
+			echo "[ ] Script ended with success!".$LF;
+		}
+
+		$ret_val = @chmod($filename , 0777);
+		if($ret_val === false) {
+			echo "[!] Script chmod failure!".$LF;
+		} else {
+			echo "[ ] Script chmod success!".$LF;
+		}
+	}
+
+
+
 	// TEST where we read a JSON and print all its fields
 	// Note the mess requiring a double json_decode 
 	/*
@@ -83,17 +141,16 @@
 		);
 
 		$tempArray = array($question);
-    	$questions = array_merge ($questions, $tempArray);
+		$questions = array_merge ($questions, $tempArray);
 
-    	$q_endindex = @strpos($question['q'], ' ', 20);
-    	if($q_endindex === false) {
-    		$q_endindex = strlen($question['q']);
-    	}
-    	echo "[ ] (".$question['class'].",".$question['level'].") = ".
-    			substr($question['q'], 0, $q_endindex)."...".$LF;
+		$q_endindex = @strpos($question['q'], ' ', 20);
+		if($q_endindex === false) {
+			$q_endindex = strlen($question['q']);
+		}
+		echo "[ ] (".$question['class'].",".$question['level'].") = ".
+				substr($question['q'], 0, $q_endindex)."...".$LF;
 	}
 	echo "[*] Number of questions: ".count($questions).$LF;
-
 
 	/*
 	 *	READ INFORMATION ABOUT TEAMS (ALWAYS FROM CONFIG)
@@ -101,8 +158,8 @@
 	echo $LF."[*] Reading team info".$LF;
 	$teams = array ();
 	for ($i = 0; $i < count($default_t); $i++) {
-    	$teams = array_merge ($teams, array($default_t[$i]));
-    	echo "[id=".$default_t[$i]['id']."] (".$default_t[$i]['name'].") = ".$default_t[$i]['score'].$LF;
+		$teams = array_merge ($teams, array($default_t[$i]));
+		echo "[id=".$default_t[$i]['id']."] (".$default_t[$i]['name'].") = ".$default_t[$i]['score'].$LF;
 	}
 	echo "[*] Number of teams: ".count($teams).$LF;
 
@@ -110,26 +167,63 @@
 	 *	NOW JSON ENCODE (TWICE :S) AND OUTPUT TO FILE
 	 */
 	echo $LF."[*] Writing to state file".$LF;
-	$q_encoded = json_encode($questions);
-	$t_encoded = json_encode($teams);
+	/*
+	$q_encoded = json_encode($questions, JSON_PRETTY_PRINT);
+	$t_encoded = json_encode($teams, JSON_PRETTY_PRINT);
 	$packet = array(
 		"questions" => $q_encoded,
 		"teams" => $t_encoded
+	);*/
+	$packet = array(
+		"questions" => $questions,
+		"teams" => $teams
 	);
-	$p_encoded = json_encode($packet);
-	$ret_val = @file_put_contents($filename, $p_encoded);	
-	
-	if($ret_val === false) {
-		echo "[!] Script failed at some point!".$LF;
-	} else {
-		echo "[ ] Script ended with success!".$LF;
-	}
+	store_object_todisk($packet, $filename);
 
-	$ret_val = @chmod($filename , 0777);
-	if($ret_val === false) {
-		echo "[!] Script chmod failure!".$LF;
-	} else {
-		echo "[ ] Script chmod success!".$LF;
+
+	/*
+	 *	DETERMINE CLASSES AND LEVES AND WRITE THE METADATA
+	 */
+	echo $LF."[*] Determining classes (max=".$MAX_CLASSES.")".$LF;
+	$q_classes = array_map(function($a) { return $a["class"]; }, $questions);
+	$q_classes = array_keys(array_flip($q_classes));
+	sort($q_classes);
+	for ($i = 0; $i < count($q_classes); $i++) {
+		echo "[ ] ".$q_classes[$i].$LF;
 	}
+	if (count($q_classes) > $MAX_CLASSES) {
+		die("MAXIMUM CLASSES REACHED");
+	}
+	echo $LF;
+	for ($i = count($q_classes); $i < $MAX_CLASSES; $i++) {
+		array_push($q_classes, "NULL");
+	}
+	for ($i = 0; $i < count($q_classes); $i++) {
+		echo "[-] ".$q_classes[$i].$LF;
+	}
+	echo $LF."[*] Determining levels (max=".$MAX_LEVELS.")".$LF;
+	$q_levels = array_unique(array_map(function($a) { return $a["level"]; }, $questions));
+	$q_levels = array_keys(array_flip($q_levels));
+	sort($q_levels);
+	for ($i = 0; $i < count($q_levels); $i++) {
+		echo "[ ] ".$q_levels[$i].$LF;
+	}
+	if (count($q_levels) > $MAX_LEVELS) {
+		die("Maximum LEVELS REACHED");
+	}
+	echo $LF;
+	for ($i = count($q_levels); $i < $MAX_LEVELS; $i++) {
+		array_push($q_levels, "NULL");
+	}
+	//sort($q_levels);
+	for ($i = 0; $i < count($q_levels); $i++) {
+		echo "[-] ".$q_levels[$i].$LF;
+	}
+	$packet = array(
+		"classes" => $q_classes,
+		"levels" => $q_levels
+	);
+	store_object_todisk($packet, $filename_meta);
+	
 
 ?> 

@@ -5,6 +5,37 @@ var think_timer_countdown;
 var current_q_index;
 var current_q_multiple;
 
+
+var remote_push = false;
+var remote_push_url;
+
+var rev_classes;
+var rev_levels;
+
+function load_options() {
+	$.ajax({
+		url: "state.php?action=options",
+		type: 'GET',
+		async : false,
+		success: function(returned_data) {
+			var server = jQuery.parseJSON(returned_data);
+			if (server.status === 200) {
+				remote_push = server.remote_push;
+				remote_push_url = server.remote_push_url;
+				rev_classes = server.classes;
+				rev_levels = server.levels;
+			} else {
+				remote_push = false;
+			}
+			console.log("[opt] = " + returned_data);
+		},
+		error: function(returned_data) {
+			remote_push = false;
+			console.log("[opt] = " + returned_data);
+		}
+	});
+}
+
 $.fn.hasAnyClass = function(classesToCheck) {
 	for (var i = 0; i < classesToCheck.length; i++) {
 		if (this.hasClass(classesToCheck[i])) {
@@ -33,16 +64,13 @@ function toggle_checkbok(e) {
 }
 
 function toggle_question_element(q_index, set_to_attempted) {
-	var k_class = statusdata_questions[q_index]['class'];
-	var k_level = statusdata_questions[q_index]['level'];
 	var k_id = statusdata_questions[q_index]['id'];
-	var entry = k_class + "_" + k_level + "_" + k_id;
 	if(set_to_attempted === false) {
-		$("[id=quiz_question][entry='" + entry + "']")
+		$("[id=quiz_question][attr_id='" + k_id + "']")
 			.removeClass()
 			.addClass("btn btn-success");
 	} else {
-		$("[id=quiz_question][entry='" + entry + "']")
+		$("[id=quiz_question][attr_id='" + k_id + "']")
 			.removeClass()
 			.addClass("btn btn-warning");
 	}
@@ -50,22 +78,82 @@ function toggle_question_element(q_index, set_to_attempted) {
 
 function build_gui() {
 
-	// (1a) Fill the grid with buttons
-	classes.forEach(function(c) {
-		levels.forEach(function(l) {
+	//classes = rev_classes;
+	//levels = rev_levels;
+
+	console.log(rev_levels);
+	//console.log(levels);
+
+
+	var head = $('#template_head').jqote(rev_classes);
+	$(head).appendTo($('[id=class_header]'));
+
+
+	for (var i = 0; i < rev_classes.length; i++) {
+		for(var j = 0; j < rev_levels.length; j++) {
+
 			var items = statusdata_questions.filter(function(item) {
-				if(item.level === l && item.class === c) {
+				if(item.level == rev_levels[j] && item.class == rev_classes[i]) {
 					return item;
 				}
 			});
+	
 			var button = $('#template').jqote(items);
 			if (button === "") {
 				button = "&nbsp;";
 			}
 			var toadd = "<div class='quiz_question_container'>" + button + "</div>";
-			$(toadd).appendTo($('#level_' + l + "_" + c));
+			$(toadd).appendTo($('[attr-l=' + j + '][attr-c=' + i + ']'));
+		}
+		/*
+		for(var j = 0; j < rev_levels.length; j++) {
+			var items = statusdata_questions.filter(function(item) {
+				if(item.level == rev_levels[j] && item.class == rev_classes[i]) {
+					return item;
+				}
+			});
+			//console.log(items);
+			var button = $('#template').jqote(items);
+			if (button === "") {
+				button = "&nbsp;";
+			}
+			var toadd = "<div class='quiz_question_container'>" + button + "</div>";
+			$(toadd).appendTo($('[attr-l=' + i + '][attr-c=' + j + ']'));
+		}
+		*/
+	}
+
+
+
+
+	// (1a) Fill the grid with buttons
+	/*
+	var i = 0;
+	var j = 0;
+	classes.forEach(function(c) {
+		levels.forEach(function(l) {
+//			console.log(c + " " + l);
+			var items = statusdata_questions.filter(function(item) {
+				if(item.level === l && item.class === c) {
+					return item;
+				}
+			});
+			console.log(items);
+			var button = $('#template').jqote(items);
+			if (button === "") {
+				button = "&nbsp;";
+			}
+			var toadd = "<div class='quiz_question_container'>" + button + "</div>";
+			//$(toadd).appendTo($('#level_' + l + "_" + c));
+			$(toadd).appendTo($('[attr-l=' + i + '][attr-c=' + j + ']'));
+
+//			attr-l="3" attr-c="0"
+//			[id=quiz_question][attr_id='" + k_id + "']
+			i++;
 		});
+		j++;
 	});
+	*/
 
 	// (1b) Artificially click the button if the current (just loaded) state says so
 	for (var q_index in statusdata_questions) {
@@ -104,6 +192,9 @@ function build_gui() {
 }
 
 function destroy_gui() {
+
+	// (0) destroy header
+	$("th").remove(".class_header_cell");
 
 	// (1) destroy all the question buttons
 	$("div").remove(".quiz_question_container");
@@ -155,8 +246,8 @@ function load_state(force_default, force_attempted) {
 		success: function(returned_data) {
 			var server = jQuery.parseJSON(returned_data);
 			if (server.status === 200) {
-				statusdata_teams = JSON.parse(server.teams);
-				statusdata_questions = JSON.parse(server.questions);
+				statusdata_teams = server.teams;
+				statusdata_questions = server.questions;
 				$("#head_row_msg").html("load from server");
 			} else {
 				statusdata_teams = default_statusdata_teams;
@@ -214,7 +305,7 @@ function save_state() {
 			teams: JSON.stringify(statusdata_teams)
 		};
 		$.ajax({
-			url: "https://localhost/datastore.php?action=put",
+			url: remote_push_url,
 			type: 'POST',
 			async : false,
 			crossDomain: true,
@@ -294,8 +385,9 @@ function team_modify_result(target, increment) {
 
 function open_modal_window(target) {
 
-	current_q = $(target).attr('entry');
-	current_q_id = current_q.split('_')[2];
+	//current_q = $(target).attr('entry');
+	//current_q_id = current_q.split('_')[2];
+	current_q_id = $(target).attr('attr_id');
 	current_q_index = statusdata_questions.map(function(e) { return e.id; }).indexOf(current_q_id);
 
 	if (typeof current_q_index === "undefined" || current_q_index === -1) {
@@ -398,8 +490,7 @@ function modal_window_hide() {
 		var k_score = statusdata_teams[d]['score'];	
 		element = document.getElementById('team_checkbox_' + k_name);
 		if($(element).is(':checked')) {
-			var k_int_score = +k_score;
-			k_int_score += 100*levels_points[level];
+			var k_int_score = +k_score + +level;
 			statusdata_teams[d]['score'] = k_int_score;
 			$("[id='" + k_name + "']").text(k_int_score);
 			element.parentElement.click();

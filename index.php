@@ -21,10 +21,18 @@
 	<script src = "media/js/ka.quiz.state.js"></script>	
 	<script src = "media/js/ka.quiz.loader.js"></script>
 
+	<!-- New template -->
+	<script id="template_head" type="text/x-jqote-template">
+		<![CDATA[
+			<th class="class_header_cell"><%=this%></th>	
+		]]>
+	</script>
+
+
 	<!-- Templates -->
 	<script id="template" type="text/x-jqote-template">
     	<![CDATA[
-        	<button id="quiz_question" class="btn btn-success" data-target="#quiz_modal" entry="<%= this.class + '_' + this.level + '_' + this.id %>">
+        	<button id="quiz_question" class="btn btn-success" data-target="#quiz_modal" attr_class="<%= this.class %>" attr_level="<%= this.level %>" attr_id="<%= this.id %>" entry="<%= this.class + '_' + this.level + '_' + this.id %>">
         		<%= this.level %>
         	</button>	
     	]]>
@@ -124,11 +132,13 @@
 				<th class="label_container">
 					&nbsp;
 				</th>
+				<!--
 		  		<th class="class_header_cell" id="class_trivia">Trivia</th>
 		  		<th class="class_header_cell" id="class_web">Web</th>
 		  		<th class="class_header_cell" id="class_misc">Misc</th>
 		  		<th class="class_header_cell" id="class_appsec">App Sec</th>
 		  		<th class="class_header_cell" id="class_malware">Malware</th>
+		  		-->
 			</tr>
 	  	</thead>
 	  	<tbody>
@@ -136,55 +146,55 @@
 	  			<td class="label_container">
 	  				<span class="label label-default label_vertical">EASIEST</span>
 	  			</td>
-	  			<td class="quiz_question_tdcell" id="level_100_trivia"></td>
-	  			<td class="quiz_question_tdcell" id="level_100_web"></td>	  			
-	  			<td class="quiz_question_tdcell" id="level_100_misc"></td>
-	  			<td class="quiz_question_tdcell" id="level_100_appsec"></td>
-	  			<td class="quiz_question_tdcell" id="level_100_malware"></td>
+	  			<td class="quiz_question_tdcell" id="level_100_trivia" 	attr-l="0" attr-c="0"></td>
+	  			<td class="quiz_question_tdcell" id="level_100_web" 	attr-l="0" attr-c="1"></td>	  			
+	  			<td class="quiz_question_tdcell" id="level_100_misc" 	attr-l="0" attr-c="2"></td>
+	  			<td class="quiz_question_tdcell" id="level_100_appsec" 	attr-l="0" attr-c="3"></td>
+	  			<td class="quiz_question_tdcell" id="level_100_malware" attr-l="0" attr-c="4"></td>
 	  		</tr>
 
 	  		<tr id="level_200">
 	  			<td class="label_container">
 					<span class="label label-default label_vertical">EASY</span>
 	  			</td>
-	  			<td class="quiz_question_tdcell" id="level_200_trivia"></td>
-	  			<td class="quiz_question_tdcell" id="level_200_web"></td>	  			
-	  			<td class="quiz_question_tdcell" id="level_200_misc"></td>
-	  			<td class="quiz_question_tdcell" id="level_200_appsec"></td>
-	  			<td class="quiz_question_tdcell" id="level_200_malware"></td>
+	  			<td class="quiz_question_tdcell" id="level_200_trivia"	attr-l="1" attr-c="0"></td>
+	  			<td class="quiz_question_tdcell" id="level_200_web"		attr-l="1" attr-c="1"></td>	  			
+	  			<td class="quiz_question_tdcell" id="level_200_misc"	attr-l="1" attr-c="2"></td>
+	  			<td class="quiz_question_tdcell" id="level_200_appsec"	attr-l="1" attr-c="3"></td>
+	  			<td class="quiz_question_tdcell" id="level_200_malware"	attr-l="1" attr-c="4"></td>
 	  		</tr>
 
 	  		<tr id="level_300">
 	  			<td class="label_container">
 	  				<span class="label label-default label_vertical">NORMAL</span>
 	  			</td>
-	  			<td class="quiz_question_tdcell" id="level_300_trivia"></td>
-	  			<td class="quiz_question_tdcell" id="level_300_web"></td>	  			
-	  			<td class="quiz_question_tdcell" id="level_300_misc"></td>
-	  			<td class="quiz_question_tdcell" id="level_300_appsec"></td>
-	  			<td class="quiz_question_tdcell" id="level_300_malware"></td>
+	  			<td class="quiz_question_tdcell" id="level_300_trivia"	attr-l="2" attr-c="0"></td>
+	  			<td class="quiz_question_tdcell" id="level_300_web"		attr-l="2" attr-c="1"></td>	  			
+	  			<td class="quiz_question_tdcell" id="level_300_misc"	attr-l="2" attr-c="2"></td>
+	  			<td class="quiz_question_tdcell" id="level_300_appsec"	attr-l="2" attr-c="3"></td>
+	  			<td class="quiz_question_tdcell" id="level_300_malware"	attr-l="2" attr-c="4"></td>
 	  		</tr>
 
 	  		<tr id="level_400">
 	  			<td class="label_container">
 	  				<span class="label label-default label_vertical">HARD</span>
 	  			</td>
-	  			<td class="quiz_question_tdcell" id="level_400_trivia"></td>
-	  			<td class="quiz_question_tdcell" id="level_400_web"></td>	  			
-	  			<td class="quiz_question_tdcell" id="level_400_misc"></td>
-	  			<td class="quiz_question_tdcell" id="level_400_appsec"></td>
-	  			<td class="quiz_question_tdcell" id="level_400_malware"></td>
+	  			<td class="quiz_question_tdcell" id="level_400_trivia"	attr-l="3" attr-c="0"></td>
+	  			<td class="quiz_question_tdcell" id="level_400_web"		attr-l="3" attr-c="1"></td>	  			
+	  			<td class="quiz_question_tdcell" id="level_400_misc"	attr-l="3" attr-c="2"></td>
+	  			<td class="quiz_question_tdcell" id="level_400_appsec"	attr-l="3" attr-c="3"></td>
+	  			<td class="quiz_question_tdcell" id="level_400_malware"	attr-l="3" attr-c="4"></td>
 	  		</tr>
 
 	  		<tr id="level_500">
 	  			<td class="label_container">
 	  				<span class="label label-default label_vertical">HARDEST</span>
 	  			</td>
-	  			<td class="quiz_question_tdcell" id="level_500_trivia"></td>
-	  			<td class="quiz_question_tdcell" id="level_500_web"></td>	  			
-	  			<td class="quiz_question_tdcell" id="level_500_misc"></td>
-	  			<td class="quiz_question_tdcell" id="level_500_appsec"></td>
-	  			<td class="quiz_question_tdcell" id="level_500_malware"></td>
+	  			<td class="quiz_question_tdcell" id="level_500_trivia" 	attr-l="4" attr-c="0"></td>
+	  			<td class="quiz_question_tdcell" id="level_500_web"		attr-l="4" attr-c="1"></td>	  			
+	  			<td class="quiz_question_tdcell" id="level_500_misc"	attr-l="4" attr-c="2"></td>
+	  			<td class="quiz_question_tdcell" id="level_500_appsec"	attr-l="4" attr-c="3"></td>
+	  			<td class="quiz_question_tdcell" id="level_500_malware"	attr-l="4" attr-c="4"></td>
 	  		</tr>
 	  	
 	  	</tbody>

@@ -1,20 +1,19 @@
 <!--
 
-var remote_push = true;
-var remote_push_server = "";
-
 var default_time_to_think = 3; // 30 seconds
 var force_default_load = false;
 var force_questions_done = false;
 
-var classes = [ "trivia", "web", "misc", "appsec", "malware" ]
-var levels = [ "100", "200", "300", "400", "500" ]
+//var classes = [ "trivia", "web", "misc", "appsec", "malware" ]
+//var levels = [ "100", "200", "300", "400", "500" ]
+/*
 var levels_points = {
     "100" : 1,
     "200" : 2,
     "300" : 3,
     "400" : 4,
     "500" : 5}
+    */
 
 var statusdata_teams;
 var statusdata_questions;

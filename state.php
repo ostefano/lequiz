@@ -2,6 +2,45 @@
 
 	require_once('config.php');
 
+	function load_options() {
+		global $filename_meta;
+		global $remote_push_url;
+		global $remote_push;
+
+		if (file_exists ($filename_meta)) {
+			$file_content = @file_get_contents($filename_meta);
+			if($file_content === false) {
+				$response = array (
+					"status" => 403,
+					"message" =>  "error reading metastate"
+				);
+			} else {
+				$saved_state = @json_decode($file_content, true);
+				if($saved_state === NULL) {
+					$response = array (
+						"status" => 403,
+						"message" =>  "JSON decode error"
+					);
+				} else {
+					$response = array (
+						"status" => 200,
+						"classes" => $saved_state['classes'],
+						"levels" => $saved_state['levels'],
+						"remote_push" => $remote_push,
+						"remote_push_url" => $remote_push_url
+					);
+				}
+			}
+			echo json_encode ($response);
+		} else {
+			$response = array (
+				"status" => 403,
+				"message" =>  "metastate file does not exist"
+			);
+			echo json_encode ($response);
+		}
+	}
+
 	function load_state() {
 		global $filename;
 		
@@ -23,7 +62,8 @@
 					$response = array (
 						"status" => 200,
 						"questions" => $saved_state['questions'],
-						"teams" => $saved_state['teams']);
+						"teams" => $saved_state['teams']
+					);
 				}
 			}
 			echo json_encode ($response);
@@ -47,10 +87,10 @@
 			echo json_encode($response);
 		} else {
 			$new_saved_status = array (
-				"questions" => $_POST['questions'],
-				"teams" => $_POST['teams'] 
+				"questions" => json_decode($_POST['questions']),
+				"teams" => json_decode($_POST['teams'])
 			);	
-			$ret_val = @file_put_contents($filename, json_encode($new_saved_status));
+			$ret_val = @file_put_contents($filename, json_encode($new_saved_status, JSON_PRETTY_PRINT));
 			if ($ret_val === false) {
 				$response = array (
 					"status" => 500,
@@ -72,6 +112,9 @@
 	}
 	
 	switch($action) {
+		case "options":
+			load_options();
+			break;
 		case "save":
 			save_state();
 			break;

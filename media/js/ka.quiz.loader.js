@@ -2,6 +2,7 @@
 
 $(document).ready(function() {
 
+	load_options();
 	load_state(force_default_load, force_questions_done);
 	document.body.style.zoom="100%";
 
